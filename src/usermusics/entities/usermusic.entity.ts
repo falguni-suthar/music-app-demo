@@ -12,6 +12,15 @@ export class Usermusic {
      @Column()
      image:string;
 
+     @Column({ nullable: true })
+     imageLocation: string;
+
+     @Column()
+     musicFile: string;
+
+     @Column({ nullable: true })
+     musicLocation: string
+
      @Column()
      name: string;
 

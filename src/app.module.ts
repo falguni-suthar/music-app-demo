@@ -6,6 +6,7 @@ import { typeOrmConfig } from './config/postgres.config';
 import { MailModule } from './mail/mail.module';
 import { CategoriesModule } from './categories/categories.module';
 import { UsermusicsModule } from './usermusics/usermusics.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { UsermusicsModule } from './usermusics/usermusics.module';
     MailModule,
     CategoriesModule,
     CategoriesModule,
-    UsermusicsModule
+    UsermusicsModule,
   ],
   controllers: [],
   providers: [],

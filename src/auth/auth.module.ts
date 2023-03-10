@@ -4,21 +4,18 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/auth.entity';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import { MailModule } from 'src/mail/mail.module';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
-    forwardRef(() => MailModule),
+    PassportModule.register({ defaultStrategy: 'jwt'}),
     TypeOrmModule.forFeature([User]),
-    PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      // signOptions: {}
-    }),
+    forwardRef(() => MailModule),
   ],
-  providers: [AuthService],
+  providers: [AuthService, JwtService, JwtStrategy],
   controllers: [AuthController],
-  exports: [AuthService]
+  exports: [AuthService, PassportModule, JwtStrategy]
 })
 export class AuthModule {}

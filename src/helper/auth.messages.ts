@@ -15,5 +15,5 @@ export const Messages = {
      'emailNotConfirmed'      : 'Failed to confirm email, please try again',
      'userNotFound'           : 'Failed to fetch user',
      'emailConfirmed'         : 'Congratulations! Your email has been verified successfully',
-     'updateFailed'           : 'Failed to update. Please try again'
+     'updateFailed'           : 'Failed to update. Please try again',
 } 
