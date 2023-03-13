@@ -8,6 +8,7 @@ export class musicCategories {
      @Column()
      musicId: string;
 
+     
      @Column()
      categoryId: string;
 }

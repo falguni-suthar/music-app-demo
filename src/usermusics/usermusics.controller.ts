@@ -8,6 +8,8 @@ import { User } from '../auth/entities/auth.entity';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
+import { Usermusic } from './entities/usermusic.entity';
+import { CategoriesService } from 'src/categories/categories.service';
 
 @Controller('music')
 export class UsermusicsController {
@@ -28,32 +30,7 @@ export class UsermusicsController {
     }
   ))
 
-  @ApiBody({
-    required: true,
-    type: "multipart/form-data",
-    schema: {
-      type: "object",
-      properties: {
-        image: {
-          type: "string",
-          format: "binary",
-        },
-        musicFile: {
-          type: "string",
-          format: "binary"
-        },
-        name: {
-          type: "string"
-        },
-        duration: {
-          type: "string",
-          format: "time"
-        }
-      },
-    },
-  })
   @ApiConsumes("multipart/form-data")
-
   @UseGuards(AuthGuard('jwt'))
   @Post('add')
   @ApiBearerAuth('accesstoken')
@@ -65,7 +42,19 @@ export class UsermusicsController {
       image?: Express.Multer.File, 
       musicFile?: Express.Multer.File
     }
-    ) {
+    ): Promise<any> {
       return this.usermusicsService.createMusic(user.id, createMusicDto, files);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/usermusic')
+  @ApiBearerAuth('accesstoken')
+  getUsersMusics(@getUser() user: User): Promise<any> {
+    return this.usermusicsService.getUsersMusics(user.id);
+  }
+
+  @Get()
+  getAllMusics(): Promise<any> {
+    return this.usermusicsService.getAllMusics();
   }
 }

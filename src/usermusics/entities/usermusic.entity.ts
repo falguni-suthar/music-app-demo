@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Usermusic {
@@ -12,13 +12,13 @@ export class Usermusic {
      @Column()
      image:string;
 
-     @Column({ nullable: true })
+     @Column()
      imageLocation: string;
 
      @Column()
      musicFile: string;
 
-     @Column({ nullable: true })
+     @Column()
      musicLocation: string
 
      @Column()
@@ -26,4 +26,5 @@ export class Usermusic {
 
      @Column({ type: 'time'})
      duration: string;
+
 }

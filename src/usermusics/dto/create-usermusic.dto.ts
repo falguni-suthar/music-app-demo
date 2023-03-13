@@ -17,4 +17,12 @@ export class CreateUsermusicDto {
      @ApiProperty({ type: 'string', format: 'time'})
      duration: string;
 
+     @IsString()
+     @ApiProperty({ type: [String] })
+     categories: string;
+
+     @IsString()
+     @ApiProperty({ type: [String] })
+     artists: string;
+
 }
