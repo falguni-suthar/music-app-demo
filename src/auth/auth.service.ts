@@ -1,22 +1,25 @@
-import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Injectable, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Messages } from 'src/helper/auth.messages';
 import { Repository } from 'typeorm';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { User } from './entities/auth.entity';
 import * as bcrypt from 'bcrypt';
 import { Codes } from 'src/helper/codes';
 import { JwtPayload } from './jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { SignInAuthDto } from './dto/signin-auth.dto';
-import moment from 'moment';
+import { createPdf } from '@saemhco/nestjs-html-pdf';
+import * as path from 'path';
+import { createReadStream } from 'fs';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectRepository(User)
-    private userRepository: Repository<User>,
+  pdf: any;
+  constructor(
+    @InjectRepository(User) private userRepository: Repository<User>,
     private jwtService: JwtService,
+    // @InjectPdf() pdf: PDF,
   ) {}
 
   /** new user signup */
@@ -157,4 +160,35 @@ export class AuthService {
       
     }
   }
+
+  async secondExample() {
+  try {
+    const users = await this.userRepository.find();
+    const data = JSON.parse(JSON.stringify(users));
+    if(!data) {
+      throw new HttpException('No user found', HttpStatus.NOT_FOUND)
+    }
+
+    const options = {
+      format: 'A4',
+      displayHeaderFooter: true,
+      margin: {
+        left: '10mm',
+        top: '25mm',
+        right: '10mm',
+        bottom: '15mm',
+      },
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px;">User's Data</span><br><span class="date" style="font-size:15px"><span></div>`,
+      footerTemplate:
+        '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
+      landscape: true,
+    };
+    const filePath = path.join(process.cwd(), 'src', 'auth', 'pdf', 'pdf-template.hbs');
+    return createPdf(filePath, options, { data: data })
+  } catch (error) {
+    throw error;
+  }
+  }
+
 }
+

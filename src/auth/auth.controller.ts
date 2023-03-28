@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
 import { MailService } from 'src/mail/mail.service';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -22,6 +21,24 @@ export class AuthController {
   @Post('/signin')
   signIn(@Body() signinAuthDto: SignInAuthDto ): Promise<any> {
     return this.authService.signIn(signinAuthDto);
+  }
+
+  @Get('user-list-pdf')
+  async getAllUserPdf(@Res() res) {
+    const buffer = await this.authService.secondExample();
+
+    res.set({
+      // pdf
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename=pdf.pdf`,
+      'Content-Length': buffer.length,
+      // prevent cache
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      Pragma: 'no-cache',
+      Expires: 0,
+    });
+
+  res.end(buffer);
   }
 
 }

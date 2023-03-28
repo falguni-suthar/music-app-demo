@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>User's Data</title>
+        <style>
+            table, th, td {
+            border:1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <div class="card-body">
+                <div class="container">
+                    <table style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>DOB</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {{#each data}}
+                        <tr>
+                            <td>{{username}}</td>
+                            <td>{{email}}</td>
+                            <td>{{phone}}</td>
+                            <td>{{dob}}</td>
+                        </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
